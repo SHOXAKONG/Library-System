@@ -1,8 +1,11 @@
+
 from django.urls import path
 
-from book.views import helloworld, get_all_books
+from book.views import get_all_books, get_all_author, home, update_book
 
 urlpatterns = [
-    path('hello-world/', helloworld, name='hello-world'),
-    path('get_all_books/', get_all_books, name='get_all_books')
+    path('', home, name='home'),
+    path('books/', get_all_books, name='books_list'),
+    path('authors/', get_all_author, name='authors_list'),
+    path('update/', update_book, name='update-book'),
 ]
