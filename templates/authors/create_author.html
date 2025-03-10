@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center m-3">
+            Create Author
+        </h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="FullName" name="full_name">
+                <label for="floatingInput">Full Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control" id="floatingInput" placeholder="Date Of Birth" name="date_of_birt">
+                <label for="floatingInput">Date Of Birth</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea cols="141" rows="10" name="bio" id="floatingInput">Bio</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
+        </form>
+    </div>
+{% endblock %}

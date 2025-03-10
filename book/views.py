@@ -1,8 +1,9 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Book, Author
-from .forms import UpdateBook, ForgotPassword, RestorePassword
+from .forms import UpdateBook, ForgotPassword, RestorePassword, UpdateAuthor, CreateBook, CreateAuthor
 from django.core.paginator import Paginator
 from .forms import LoginForm, RegisterForm
 from .service import send_email_in_threading
@@ -46,6 +47,24 @@ def get_all_author(request):
     return render(request, 'authors/authors_list.html', context=data)
 
 
+@login_required
+def create_book(request):
+    authors = Author.objects.all()
+    if request.method == "POST":
+        forms = CreateBook(request.POST, request.FILES)
+        if forms.is_valid():
+            book = forms.save(commit=False)
+            author_id = request.POST.get('author')
+            author = Author.objects.filter(id=author_id).first()
+            book.author = author
+            book.save()
+            return redirect('books_list')
+        return render(request, 'books/create_book.html', {"forms": forms, "authors" : authors})
+    forms = CreateBook()
+    return render(request, 'books/create_book.html', {"forms": forms, "authors" : authors})
+
+
+@login_required
 def update_book(request, pk):
     authors = Author.objects.all()
     book = get_object_or_404(Book, pk=pk)
@@ -64,9 +83,48 @@ def update_book(request, pk):
     })
 
 
+@login_required
 def delete_view(request, pk):
     Book.objects.filter(pk=pk).delete()
     return redirect('books_list')
+
+
+@login_required
+def update_author(request, pk):
+    author = get_object_or_404(Author, pk=pk)
+    if request.method == "POST":
+        forms = UpdateAuthor(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('authors_list')
+        return render(request, 'authors/update_author.html', {
+            "forms": forms,
+            "author": author
+        })
+    forms = UpdateAuthor()
+    return render(request, 'authors/update_author.html', {
+        "forms": forms,
+        "author": author
+    })
+
+
+@login_required
+def delete_author(request, pk):
+    Author.objects.filter(pk=pk).delete()
+    return redirect('authors_list')
+
+
+@login_required
+def create_author(request):
+    if request.method == "POST":
+        forms = CreateAuthor(request.POST)
+        if forms.is_valid():
+            forms.save()
+            return redirect('authors_list')
+        return render(request, 'authors/create_author.html', {"forms": forms})
+    forms = CreateAuthor()
+    return render(request, 'authors/create_author.html', {"forms": forms}
+                  )
 
 
 def login_view(request):
@@ -120,3 +178,8 @@ def restore_password(request):
         return render(request, 'login/reset_password.html', {"forms": forms})
     forms = RestorePassword()
     return render(request, 'login/reset_password.html', {"forms": forms})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login_')

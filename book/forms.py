@@ -17,6 +17,27 @@ class UpdateBook(forms.ModelForm):
             raise ValidationError("Title len should be more than 3")
         return title
 
+class UpdateAuthor(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = '__all__'
+
+    def clean_full_name(self):
+        full_name = self.cleaned_data.get('full_name')
+        if len(full_name) < 3:
+            raise ValidationError("Full Name Should be more than 3")
+        return full_name
+
+class CreateBook(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+class CreateAuthor(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = '__all__'
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=200)
     password = forms.CharField(widget=forms.PasswordInput)

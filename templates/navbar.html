@@ -11,20 +11,33 @@
                     <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'books_list' %}">Books</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'authors_list' %}">Authors</a>
                 </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create-book' %}">Create Book</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'create_author' %}">Create Author</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login_' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
             </ul>
             <form class="d-flex" role="search">
-                <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search" value="{{ q }}">
+                <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search"
+                       value="{{ q }}">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
         </div>
