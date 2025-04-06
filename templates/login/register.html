@@ -1,0 +1,32 @@
+{% extends 'base_login_and_register.html' %}
+
+{% block content %}
+    <section class="register d-flex align-items-center" style="height: 100vh">
+        <div class="container p-5">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
+                    <label for="first_name">First Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" name="last_name" placeholder="Last Name">
+                    <label for="floatingInput">Last Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" name="email" placeholder="Email">
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="floatingRePassword" name="password_confirm" placeholder="Password Confirm">
+                    <label for="floatingRePassword">Password Confirm</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center m-3">
+            Book List
+        </h1>
+        <table class="table table-light table-striped">
+            <thead>
+            <tr class="text-center">
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Price</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Published Date</th>
+                <th scope="col">Buttons</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in books %}
+                <tr class="text-center">
+                    <th scope="row">{{ book.id }}</th>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>${{ book.price }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.published_date }}</td>
+                    <td class="d-flex align-items-start">
+                        <a href="{% url 'update' book.id %}" class="btn btn-primary">Update</a>
+                        <a href="{% url 'delete' book.id %}" class="btn btn-danger mx-3">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    <div class="paginations m-auto">
+        {% include 'pagination.html' with page=books %}
+    </div>
+    </div>
+
+
+{% endblock %}

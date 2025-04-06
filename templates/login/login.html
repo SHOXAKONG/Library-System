@@ -1,0 +1,23 @@
+{% extends 'base_login_and_register.html' %}
+
+{% block content %}
+    <section class="login d-flex align-items-center" style="height: 100vh">
+        <div class="container p-5">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" name="email" placeholder="email">
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" name="password"
+                           placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
+                <a href="{% url 'forgot_password' %}">Forgot Password</a>
+                <a href="{% url 'google_login' %}">Login With Google</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}

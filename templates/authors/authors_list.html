@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center m-3">
+            Author List
+        </h1>
+        <table class="table table-light table-striped">
+            <thead>
+            <tr class="text-center">
+                <th scope="col">ID</th>
+                <th scope="col">Full Name</th>
+                <th scope="col">Date Of Birth</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for author in authors %}
+                <tr class="text-center">
+                    <th scope="row">{{ author.id }}</th>
+                    <td>{{ author.full_name }}</td>
+                    <td>{{ author.date_of_birth }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="paginations m-auto">
+            {% include 'pagination.html' with page=authors %}
+        </div>
+    </div>
+
+{% endblock %}

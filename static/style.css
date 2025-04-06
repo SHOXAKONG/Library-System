@@ -1,0 +1,17 @@
+.navbar {
+    background-color: gray;
+}
+
+.navbar-brand {
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.nav-link {
+    color: black;
+    transition: all 0.2s ease;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #dccfcf;
+}
