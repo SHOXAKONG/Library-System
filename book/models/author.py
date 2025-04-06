@@ -14,6 +14,9 @@ class Author(Base):
 
     class Meta:
         db_table = 'author'
+        permissions = [
+            ('can_manage_author', "Can Manage Author"),
+        ]
 
     def __str__(self):
         return self.full_name

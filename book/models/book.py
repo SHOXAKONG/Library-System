@@ -1,11 +1,12 @@
 from django.db import models
-
 from book.models.author import Author
 from book.models.base import Base
+
 
 class CustomManager(models.Manager):
     def search(self, q):
         return self.get_queryset().filter(title__icontains=q)
+
 
 class Book(Base):
     title = models.CharField(max_length=255, null=False, blank=False)
@@ -19,6 +20,9 @@ class Book(Base):
 
     class Meta:
         db_table = 'book'
+        permissions = [
+            ('can_manage_books', "Can Manage Books"),
+        ]
 
     def __str__(self):
         return self.title

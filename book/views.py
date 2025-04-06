@@ -1,7 +1,6 @@
 from urllib.parse import urlencode
-
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
@@ -52,6 +51,7 @@ def get_all_author(request):
 
 
 @login_required
+@permission_required('book.can_manage_books', raise_exception=True)
 def create_book(request):
     authors = Author.objects.all()
     if request.method == "POST":
@@ -69,6 +69,7 @@ def create_book(request):
 
 
 @login_required
+@permission_required('book.can_manage_books', raise_exception=True)
 def update_book(request, pk):
     authors = Author.objects.all()
     book = get_object_or_404(Book, pk=pk)
@@ -88,12 +89,14 @@ def update_book(request, pk):
 
 
 @login_required
+@permission_required('book.can_manage_books', raise_exception=True)
 def delete_view(request, pk):
     Book.objects.filter(pk=pk).delete()
     return redirect('books_list')
 
 
 @login_required
+@permission_required('book.can_manage_author', raise_exception=True)
 def update_author(request, pk):
     author = get_object_or_404(Author, pk=pk)
     if request.method == "POST":
@@ -113,12 +116,14 @@ def update_author(request, pk):
 
 
 @login_required
+@permission_required('book.can_manage_author', raise_exception=True)
 def delete_author(request, pk):
     Author.objects.filter(pk=pk).delete()
     return redirect('authors_list')
 
 
 @login_required
+@permission_required('book.can_manage_author', raise_exception=True)
 def create_author(request):
     if request.method == "POST":
         forms = CreateAuthor(request.POST)

@@ -67,18 +67,18 @@ class RegisterForm(forms.ModelForm):
         return user
 
 class RestorePassword(forms.Form):
-    username = forms.CharField(max_length=200)
+    email = forms.EmailField()
     code = forms.CharField(max_length=6)
     password = forms.CharField(max_length=255, widget=forms.PasswordInput)
     re_password = forms.CharField(max_length=255, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
-        username = cleaned_data.get('username')
+        email = cleaned_data.get('email')
         code = cleaned_data.get('code')
         password = cleaned_data.get('password')
         re_password = cleaned_data.get('re_password')
-        user = User.objects.filter(username=username).first()
+        user = User.objects.filter(email=email).first()
         if not user:
             raise forms.ValidationError("User not found")
 
@@ -91,7 +91,7 @@ class RestorePassword(forms.Form):
         return cleaned_data
 
     def update(self):
-        user = User.objects.filter(username=self.cleaned_data.get('username')).first()
+        user = User.objects.filter(email=self.cleaned_data.get('email')).first()
         user.set_password(self.cleaned_data.get('password'))
         user.save()
         user.save()
