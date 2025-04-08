@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
     <div class="container">
         <h1 class="text-center m-3">
@@ -9,8 +9,8 @@
             <thead>
             <tr class="text-center">
                 <th scope="col">ID</th>
-                <th scope="col">Full Name</th>
-                <th scope="col">Date Of Birth</th>
+                <th scope="col">{% trans "Full Name" %}</th>
+                <th scope="col">{% trans 'Date of Birth' %}</th>
             </tr>
             </thead>
             <tbody>

@@ -1,6 +1,7 @@
 from django.db import models
 from book.models.author import Author
 from book.models.base import Base
+from django.utils.translation import gettext_lazy as _
 
 
 class CustomManager(models.Manager):
@@ -9,12 +10,12 @@ class CustomManager(models.Manager):
 
 
 class Book(Base):
-    title = models.CharField(max_length=255, null=False, blank=False)
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
-    about = models.TextField(blank=True, null=True)
-    isbn = models.IntegerField()
-    published_date = models.DateField(auto_now=True)
+    title = models.CharField(max_length=255, null=False, blank=False, verbose_name=_("Title"))
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name=_("Author"))
+    price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name=_('Price'))
+    about = models.TextField(blank=True, null=True, verbose_name=_("About"))
+    isbn = models.IntegerField(verbose_name=_("ISBN"))
+    published_date = models.DateField(auto_now=True, verbose_name=_("Published Date"))
 
     objects = CustomManager()
 
@@ -23,6 +24,8 @@ class Book(Base):
         permissions = [
             ('can_manage_books', "Can Manage Books"),
         ]
+        verbose_name = _('Book')
+        verbose_name_plural = _('Books')
 
     def __str__(self):
         return self.title

@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from decouple import config
-
+from django.utils.translation import gettext_lazy as _
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,12 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'book',
     'django_bootstrap5',
-    'urllib'
+    'urllib',
+    'rosetta',
 
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -103,7 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'book.authentication.EmailBackend'
+    # 'book.authentication.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 # Internationalization
@@ -117,6 +120,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [
+    ('en', "English"),
+    ('ru', "Russian"),
+    ('uz', "Uzbek")
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale'
+]
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
@@ -128,6 +141,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -147,3 +162,5 @@ GOOGLE_REDIRECT_URI = config("GOOGLE_REDIRECT_URI")
 GOOGLE_AUTH_URL = config("GOOGLE_AUTH_URL")
 GOOGLE_TOKEN_URL = config("GOOGLE_TOKEN_URL")
 GOOGLE_USERINFO_URL = config("GOOGLE_USERINFO_URL")
+
+AUTH_USER_MODEL = 'book.User'

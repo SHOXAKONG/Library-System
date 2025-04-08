@@ -1,8 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 
 from book.views import get_all_books, get_all_author, home, update_book, login_view, register_view, delete_view, \
     restore_password, forgot_password, create_book, update_author, delete_author, create_author, google_login, \
-    google_callback
+    google_callback, ProfileView, ProfileUpdateView
 
 urlpatterns = [
     path('', home, name='home'),
@@ -20,5 +20,7 @@ urlpatterns = [
     path('create_author/', create_author, name='create_author'),
     path('logout/', login_view, name='logout'),
     path('google/login/', google_login, name='google_login'),
-    path('google/callback/', google_callback, name='google_callback')
+    path('google/callback/', google_callback, name='google_callback'),
+    path('profile/', ProfileView.as_view(), name='profile_view'),
+    path('profile/update/', ProfileUpdateView.as_view(), name='update_profile')
 ]

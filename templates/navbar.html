@@ -1,3 +1,4 @@
+{% load i18n %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container">
         <a class="navbar-brand" href="{% url 'home' %}">Library System</a>
@@ -8,39 +9,65 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">{% trans 'Home' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'books_list' %}">Books</a>
+                    <a class="nav-link" href="{% url 'books_list' %}">{% trans 'Books' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'authors_list' %}">Authors</a>
+                    <a class="nav-link" href="{% url 'authors_list' %}">{% trans 'Authors' %}</a>
                 </li>
                 {% if request.user.is_authenticated %}
                     {% if perms.book.can_manage_books and perms.book.can_manage_authors %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create-book' %}">Create Book</a>
+                            <a class="nav-link" href="{% url 'create-book' %}">{% trans 'Create Book' %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'create_author' %}">Create Author</a>
+                            <a class="nav-link" href="{% url 'create_author' %}">{% trans 'Create Author' %}</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        <a class="nav-link" href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile_view' %}">{% trans 'Profile' %}</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login_' %}">Login</a>
+                        <a class="nav-link" href="{% url 'login_' %}">{% trans 'Login' %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-link" href="{% url 'register' %}">{% trans 'Register' %}</a>
                     </li>
                 {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_language_info for LANGUAGE_CODE as lang %}
+                        {{ lang.name_local|capfirst }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang_code, lang_name in LANGUAGES %}
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="language" value="{{ lang_code }}">
+                                    <button type="submit" class="dropdown-item">
+                                        {% get_language_info for lang_code as lang_info %}
+                                        {{ lang_info.name_local|capfirst }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search"
                        value="{{ q }}">
-                <button class="btn btn-primary" type="submit">Search</button>
+                <button class="btn btn-primary" type="submit">{% trans "Search" %}</button>
             </form>
         </div>
     </div>

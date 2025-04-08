@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
     <div class="container">
         <h1 class="text-center m-3">
@@ -9,12 +9,12 @@
             <thead>
             <tr class="text-center">
                 <th scope="col">ID</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Price</th>
-                <th scope="col">ISBN</th>
-                <th scope="col">Published Date</th>
-                <th scope="col">Buttons</th>
+                <th scope="col">{% trans "Title" %}</th>
+                <th scope="col">{% trans "Author" %}</th>
+                <th scope="col">{% trans "Price" %}</th>
+                <th scope="col">{% trans "ISBN" %}</th>
+                <th scope="col">{% trans 'Published Date' %}</th>
+                <th scope="col">{% trans 'Buttons' %}</th>
             </tr>
             </thead>
             <tbody>
@@ -27,16 +27,16 @@
                     <td>{{ book.isbn }}</td>
                     <td>{{ book.published_date }}</td>
                     <td class="d-flex align-items-start">
-                        <a href="{% url 'update' book.id %}" class="btn btn-primary">Update</a>
-                        <a href="{% url 'delete' book.id %}" class="btn btn-danger mx-3">Delete</a>
+                        <a href="{% url 'update' book.id %}" class="btn btn-primary">{% trans "Update" %}</a>
+                        <a href="{% url 'delete' book.id %}" class="btn btn-danger mx-3">{% trans "Delete" %}</a>
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
-    <div class="paginations m-auto">
-        {% include 'pagination.html' with page=books %}
-    </div>
+        <div class="paginations m-auto">
+            {% include 'pagination.html' with page=books %}
+        </div>
     </div>
 
 

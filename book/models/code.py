@@ -1,7 +1,8 @@
 from datetime import timedelta
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
+from .users import User
 from .base import Base
 
 def code_time():

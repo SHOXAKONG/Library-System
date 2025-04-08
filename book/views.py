@@ -1,9 +1,14 @@
 from urllib.parse import urlencode
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
+from .models import User
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
+from django.views.generic import DetailView, UpdateView
+
 from config import settings
 from .models import Book, Author
 from .forms import UpdateBook, ForgotPassword, RestorePassword, UpdateAuthor, CreateBook, CreateAuthor
@@ -143,7 +148,7 @@ def login_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(request, email=email, password=password)
-            if user:
+            if user is not None:
                 login(request, user)
                 return redirect('home')
         return render(request, 'login/login.html', {"form": form})
@@ -242,3 +247,22 @@ def google_callback(request):
 
     login(request, user)
     return redirect('/')
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'profile/profile.html'
+    context_object_name = 'user'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ['image', 'bio', 'phone_number']
+    template_name = 'profile/update.html'
+    success_url = reverse_lazy('profile_view')
+
+    def get_object(self, queryset=None):
+        return self.request.user

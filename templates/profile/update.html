@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+    <section class="update_profile">
+        <div class="container">
+            <h1>{% trans "Update Profile" %}</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_image" class="formLabel">{% trans "Profile" %}</label>
+                    {{ form.image }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_bio" class="formLabel">{% trans "Bio" %}</label>
+                    {{ form.bio }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_phone" class="formLabel">{% trans "Phone" %}</label>
+                    {{ form.phone_number }}
+                </div>
+                <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

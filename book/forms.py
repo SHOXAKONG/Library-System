@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .models import Author, Book, Code
-from django.contrib.auth.models import User
+from .models import User
 
 
 class UpdateBook(forms.ModelForm):
@@ -16,6 +16,7 @@ class UpdateBook(forms.ModelForm):
             raise ValidationError("Title len should be more than 3")
         return title
 
+
 class UpdateAuthor(forms.ModelForm):
     class Meta:
         model = Author
@@ -27,15 +28,18 @@ class UpdateAuthor(forms.ModelForm):
             raise ValidationError("Full Name Should be more than 3")
         return full_name
 
+
 class CreateBook(forms.ModelForm):
     class Meta:
         model = Book
         fields = '__all__'
 
+
 class CreateAuthor(forms.ModelForm):
     class Meta:
         model = Author
         fields = '__all__'
+
 
 class LoginForm(forms.Form):
     email = forms.EmailField()
@@ -65,6 +69,7 @@ class RegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
 
 class RestorePassword(forms.Form):
     email = forms.EmailField()
@@ -96,8 +101,9 @@ class RestorePassword(forms.Form):
         user.save()
         user.save()
 
+
 class ForgotPassword(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput(attrs={"class" : "form-control"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
 
     def clean_email(self):
         cleaned_data = super().clean()
@@ -105,3 +111,5 @@ class ForgotPassword(forms.Form):
         if not User.objects.filter(email=email).exists():
             raise ValidationError("Email Does Not Exist")
         return email
+
+

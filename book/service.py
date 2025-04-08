@@ -1,5 +1,3 @@
-import threading
-from django.core.mail import EmailMultiAlternatives
 from .models import Code
 from .utils import code_generate
 import threading

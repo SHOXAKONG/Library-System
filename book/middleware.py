@@ -12,7 +12,7 @@ class AutoLogoutMiddleware:
             last_active = request.session.get('last_activity')
             if last_active:
                 last_active_time = datetime.datetime.fromisoformat(last_active)
-                if (now() - last_active_time).total_seconds() > 20:
+                if (now() - last_active_time).total_seconds() > 8400000:
                     logout(request)
                 request.session['last_activity'] = now().isoformat()
         response = self.get_response(request)

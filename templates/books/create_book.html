@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
 {% block content %}
     <div class="container">
         <h1 class="text-center m-3">
@@ -9,28 +9,28 @@
             {% csrf_token %}
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingInputTitle" placeholder="Title" name="title">
-                <label for="floatingInputTitle">Title</label>
+                <label for="floatingInputTitle">{% trans "Title" %}</label>
             </div>
             <select class="form-select mb-3" aria-label="Default select example" name="author">
-                <option value="" disabled selected>Select an Author</option>
+                <option value="" disabled selected>{% trans 'Select an Author' %}</option>
                 {% for author in authors %}
                     <option value="{{ author.id }}">{{ author.full_name }}</option>
                 {% endfor %}
             </select>
             <div class="form-floating mb-3">
                 <input type="number" class="form-control" id="floatingInputPrice" placeholder="Price" name="price">
-                <label for="floatingInputPrice">Price</label>
+                <label for="floatingInputPrice">{% trans 'Price' %}</label>
             </div>
             <div class="form-floating mb-3">
                 <textarea class="form-control" name="about" id="floatingInputAbout"
                           placeholder="About the Book"></textarea>
-                <label for="floatingInputAbout">About the Book</label>
+                <label for="floatingInputAbout">{% trans 'About the Book' %}</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="number" class="form-control" id="floatingInputISBN" placeholder="ISBN" name="isbn">
-                <label for="floatingInputISBN">ISBN</label>
+                <label for="floatingInputISBN">{% trans 'ISBN' %}</label>
             </div>
-            <button type="submit" class="btn btn-primary w-100 my-3">Submit</button>
+            <button type="submit" class="btn btn-primary w-100 my-3">{% trans 'Submit' %}</button>
         </form>
 
     </div>
