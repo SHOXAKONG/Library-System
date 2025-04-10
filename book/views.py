@@ -1,13 +1,15 @@
+import os
+from pyexpat.errors import messages
 from urllib.parse import urlencode
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy
-
-from .models import User
+from django.contrib import messages
+from .models import User, FileUpload
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView, CreateView, DeleteView
 
 from config import settings
 from .models import Book, Author
@@ -266,3 +268,69 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class FileUploadListView(ListView):
+    model = FileUpload
+    template_name = 'files/file_list.html'
+    context_object_name = 'files'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            if self.request.user.has_perm('files.can_view_all_files'):
+                return FileUpload.objects.all()
+            return FileUpload.objects.filter(user=self.request.user)
+        return FileUpload.objects.none()
+
+
+class FileUploadCreate(CreateView):
+    model = FileUpload
+    fields = ['title', 'file', 'is_public']
+    template_name = 'files/file_upload.html'
+    success_url = reverse_lazy('files_list')
+
+    def form_valid(self, form):
+        if not self.request.user.is_authenticated:
+            messages.error(self.request, "Please enter to system")
+            return self.form_valid(form)
+        form.instance.user = self.request.user
+
+        if self.request.user.groups.filter(name="Premium").exists():
+            file_count = FileUpload.objects.filter(user=self.request.user).count()
+            if file_count >= 5:
+                messages.error(self.request, "You have only 5 try")
+                return self.form_invalid(form)
+        return super().form_valid(form)
+
+
+class FileDeleteView(PermissionRequiredMixin, DeleteView):
+    model = FileUpload
+    template_name = 'files/file_delete_confirm.html'
+    success_url = reverse_lazy('files_list')
+    permission_required = 'book.can_upload_file'
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, f"{self.get_object().title} File deleted successfully")
+        return super().delete(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return FileUpload.objects.filter(user=self.request.user)
+
+
+class UpdateFileView(PermissionRequiredMixin, UpdateView):
+    model = FileUpload
+    template_name = 'files/file_update.html'
+    fields = ['title', 'file', 'is_public']
+    success_url = reverse_lazy('files_list')
+    permission_required = 'book.can_upload_file'
+
+    def form_valid(self, form):
+        if ' Knightsfile' in form.changed_data:
+            old_file = self.get_object().file
+            if old_file and os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+        messages.success(self.request, f"{form.instance.title} updated successfully")
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        return FileUpload.objects.filter(user=self.request.user)

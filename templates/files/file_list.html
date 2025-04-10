@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="file_list">
+        <div class="container">
+            <h1>Upload List</h1>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>User</th>
+                    <th>Uploaded At</th>
+                    <th>Public</th>
+                    <th>Link</th>
+                    <th>Buttons</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for file in files %}
+                    <tr>
+                        <td>{{ file.title }}</td>
+                        <td>{{ file.user }}</td>
+                        <td><{{ file.created_at }}/td>
+                        <td>{{ file.is_public }}</td>
+                        <td><a href="{{ file.file.url }}" class="btn" target="_blank">See</a></td>
+                        <td class="d-flex gap-2">
+                            <a href="{% url 'update_file' file.id %}" class="btn btn-warning">Update</a>
+                            <a href="{% url 'delete_file' file.id %}" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

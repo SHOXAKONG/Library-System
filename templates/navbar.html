@@ -18,12 +18,24 @@
                     <a class="nav-link" href="{% url 'authors_list' %}">{% trans 'Authors' %}</a>
                 </li>
                 {% if request.user.is_authenticated %}
-                    {% if perms.book.can_manage_books and perms.book.can_manage_authors %}
+                    {% if perms.book.can_manage_books %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'create-book' %}">{% trans 'Create Book' %}</a>
                         </li>
+                    {% endif %}
+                    {% if perms.book.can_manage_author %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'create_author' %}">{% trans 'Create Author' %}</a>
+                        </li>
+                    {% endif %}
+                    {% if perms.book.can_view_all_files %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'files_list' %}">{% trans 'Files' %}</a>
+                        </li>
+                    {% endif %}
+                    {% if perms.book.can_upload_file %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'upload' %}">{% trans 'Upload Files' %}</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">

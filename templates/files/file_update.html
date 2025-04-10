@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="upload_file">
+        <div class="container">
+            <h1>Upload File</h1>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_title" class="form_label">
+                        File Name
+                    </label>
+                    {{ form.title }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_file" class="form_label">
+                        File
+                    </label>
+                    {{ form.file }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_public" class="form_label">
+                        File Public
+                    </label>
+                    {{ form.is_public }}
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+                <a href="{% url 'files_list' %}" class="btn btn-primary">Back</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}

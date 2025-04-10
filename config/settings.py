@@ -53,7 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'book.middleware.AutoLogoutMiddleware'
+    'book.middleware.AutoLogoutMiddleware',
+    'book.middleware.FileUploadRestrictionMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'

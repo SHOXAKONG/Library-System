@@ -1,5 +1,5 @@
 from django.contrib import admin
-from book.models import Book, Author
+from book.models import Book, Author, FileUpload
 from django.contrib.auth.admin import UserAdmin as BaseAdmin
 from django.contrib.auth import get_user_model
 
@@ -36,6 +36,12 @@ class UserAdmin(BaseAdmin):
         (None, {
             'classes': ('wide',),
             'fields': ('email', 'password1', 'password2', 'is_staff', 'is_superuser')}
-        ),
+         ),
     )
+
+
+@admin.register(FileUpload)
+class UploadedFileAdmin(admin.ModelAdmin):
+    list_display = ['title', 'user', 'file', 'created_at', 'is_public']
+    list_filter = ['user', 'title']
 

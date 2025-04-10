@@ -14,7 +14,9 @@
                 <th scope="col">{% trans "Price" %}</th>
                 <th scope="col">{% trans "ISBN" %}</th>
                 <th scope="col">{% trans 'Published Date' %}</th>
-                <th scope="col">{% trans 'Buttons' %}</th>
+                {% if perms.book.can_manage_books %}
+                    <th scope="col">{% trans 'Buttons' %}</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -26,10 +28,12 @@
                     <td>${{ book.price }}</td>
                     <td>{{ book.isbn }}</td>
                     <td>{{ book.published_date }}</td>
-                    <td class="d-flex align-items-start">
-                        <a href="{% url 'update' book.id %}" class="btn btn-primary">{% trans "Update" %}</a>
-                        <a href="{% url 'delete' book.id %}" class="btn btn-danger mx-3">{% trans "Delete" %}</a>
-                    </td>
+                    {% if perms.book.can_manage_books %}
+                        <td class="d-flex align-items-start">
+                            <a href="{% url 'update' book.id %}" class="btn btn-primary">{% trans "Update" %}</a>
+                            <a href="{% url 'delete' book.id %}" class="btn btn-danger mx-3">{% trans "Delete" %}</a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

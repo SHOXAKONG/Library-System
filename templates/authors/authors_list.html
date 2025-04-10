@@ -11,6 +11,9 @@
                 <th scope="col">ID</th>
                 <th scope="col">{% trans "Full Name" %}</th>
                 <th scope="col">{% trans 'Date of Birth' %}</th>
+                {% if perms.book.can_manage_author %}
+                    <th scope="col">{% trans 'Buttons' %}</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -19,6 +22,13 @@
                     <th scope="row">{{ author.id }}</th>
                     <td>{{ author.full_name }}</td>
                     <td>{{ author.date_of_birth }}</td>
+                    {% if perms.book.can_manage_author %}
+                    <td class="d-flex align-items-center justify-content-center">
+                        <a href="{% url 'update_author' author.id %}" class="btn btn-primary">{% trans "Update" %}</a>
+                        <a href="{% url 'delete_author' author.id %}"
+                           class="btn btn-danger mx-3">{% trans "Delete" %}</a>
+                    </td>
+                {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

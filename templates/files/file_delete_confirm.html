@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="upload_file">
+        <div class="container">
+            <h1>Delete File</h1>
+            <p><strong>{{ object.title }} you want to delete this file</strong></p>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Delete</button>
+                <a href="{% url 'files_list' %}" class="btn btn-primary">Back</a>
+            </form>
+        </div>
+    </section>
+{% endblock %}
